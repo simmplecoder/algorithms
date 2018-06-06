@@ -141,15 +141,7 @@ namespace shino
         {
             clear_helper(root);
         }
-
-        void inorder_print(std::ostream& os)
-        {
-            for (const auto& x: *this)
-            {
-                os << x << ' ';
-            }
-        }
-
+        
         iterator begin()
         {
             return iterator{root};
