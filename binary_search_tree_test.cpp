@@ -62,9 +62,9 @@ void run_randomized_remove_tests()
         shino::binary_search_tree<int> tree;
         auto numbers = generate_unique_numbers(i);
         std::sort(numbers.begin(), numbers.end());
+        std::cout << "running remove test on tree of size " << i << '\n';
         for (std::size_t j = 0; j < i; ++j)
         {
-            std::cout << "running remove test on tree of size " << i << '\n';
             std::bernoulli_distribution dist;
             if (dist(twister))
             {
