@@ -98,11 +98,11 @@ std::vector<int> generate_unique_numbers(std::size_t size)
     return {numbers.begin(), numbers.end()};
 }
 
-void run_randomized_tests()
+void run_randomized_insert_tests()
 {
-    for (std::size_t i = 0; i <= 10'000; ++i)
+    for (std::size_t i = 0; i <= 1'000; ++i)
     {
-        std::cout << "running binary_search_tree test on size " << i << '\n';
+        std::cout << "running binary_search_tree insert test on size " << i << '\n';
         auto numbers = generate_unique_numbers(i);
         shino::binary_search_tree<int> tree;
         for (auto x: numbers)
@@ -118,6 +118,44 @@ void run_randomized_tests()
     }
 }
 
+void remove_value(std::vector<int>& v, int x)
+{
+    for (auto iter = v.begin(); iter != v.end(); ++iter)
+    {
+        if (*iter == x)
+            v.erase(iter);
+    }
+}
+
+void run_randomized_remove_tests()
+{
+    static std::mt19937_64 twister;
+
+    for (std::size_t i = 0; i <= 1'000; ++i)
+    {
+        shino::binary_search_tree<int> tree;
+        auto numbers = generate_unique_numbers(i);
+        std::sort(numbers.begin(), numbers.end());
+        for (std::size_t j = 0; j < i; ++j)
+        {
+            std::cout << "running remove test on tree of size " << i << '\n';
+            std::bernoulli_distribution dist;
+            if (dist(twister))
+            {
+                tree.delete_if_exists(static_cast<const int>(i));
+                remove_value(numbers, static_cast<int>(i));
+            }
+
+        }
+        std::size_t values_index = 0;
+        for (auto x: tree)
+        {
+            if (numbers[values_index++] == x)
+                throw std::logic_error{"remove doesn't work correctly on " + std::to_string(i)};
+        }
+    }
+}
+
 int main(){
     std::cout << "running remove case 1...\n";
     test_remove_case_one();
@@ -128,9 +166,12 @@ int main(){
     std::cout << "running remove case 3...\n";
     test_remove_case_three();
     std::cout << "remove case 3 passed successfully\n";
-//
+
     std::cout << "running randomized tests...\n";
-    run_randomized_tests();
+    run_randomized_insert_tests();
     std::cout << "randomized tests passed successfully\n";
-    shino::binary_search_tree<int> tree;
+
+    std::cout << "running randomized remove tests...\n";
+    run_randomized_remove_tests();
+    std::cout << "randomized remove tests passed successfully\n";
 }
