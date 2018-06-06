@@ -214,17 +214,6 @@ namespace shino
                 return exists_helper(value, current_node->right);
         }
 
-        void inorder_print_helper(std::ostream& os,
-                                  node*& current_node)
-        {
-            if (current_node == nullptr)
-                return;
-
-            inorder_print_helper(os, current_node->left);
-            os << current_node->value << ' ';
-            inorder_print_helper(os, current_node->right);
-        }
-
         bool try_insert_helper(const ValueType& value,
                                node*& current_node)
         {
