@@ -21,3 +21,4 @@ add_executable(binary_search_tree binary_search_tree_test.cpp binary_tree_iterat
 add_test(NAME binary_search_tree_test COMMAND binary_search_tree)
 
 add_executable(merge_sort merge_sort.hpp merge_sort_test.cpp)
+add_test(NAME merge_sort_test COMMAND merge_sort)
