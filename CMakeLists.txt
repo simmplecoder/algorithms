@@ -33,3 +33,6 @@ add_executable(benchmarkv2 benchmark/benchmarkv2.cpp)
 
 add_executable(radix_sort radix_sort_test.cpp radix_sort.hpp)
 add_test(NAME radix_sort_test COMMAND radix_sort)
+
+add_executable(comb_sort comb_sort_test.cpp quadratic_sorts.hpp)
+add_test(NAME comb_sort_test COMMAND comb_sort)
