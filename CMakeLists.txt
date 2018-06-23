@@ -14,6 +14,9 @@ endif()
 add_executable(quick_sort quick_sort_test.cpp quick_sort.hpp)
 add_test(NAME quick_sort_test COMMAND quick_sort)
 
+add_executable(randomized_quicksort randomized_quicksort_test.cpp quick_sort.hpp)
+add_test(NAME randomized_quicksort_test COMMAND randomized_quicksort)
+
 add_executable(heap_sort heap_sort.hpp heap_sort_test.cpp)
 add_test(NAME heap_sort_test COMMAND heap_sort)
 
@@ -29,3 +32,4 @@ add_test(NAME counting_sort_test COMMAND counting_sort)
 add_executable(benchmarkv2 benchmark/benchmarkv2.cpp)
 
 add_executable(radix_sort radix_sort_test.cpp radix_sort.hpp)
+add_test(NAME radix_sort_test COMMAND radix_sort)

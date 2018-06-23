@@ -8,7 +8,7 @@
 std::vector<int> generate_vector(std::size_t size)
 {
     static std::mt19937 twister{};
-    static std::uniform_int_distribution<int> dist{0, 9};
+    static std::uniform_int_distribution<int> dist{};
 
     std::unordered_set<int> numbers;
     while (numbers.size() < size)
@@ -32,7 +32,7 @@ int main()
         std::generate(v.begin(), v.end(), [&dist, &twister]{return dist(twister);});
 
         std::cout << "sorting vector of size " << i << '\n';
-        quick_sort(v.begin(), v.end());
+        shino::quick_sort(v.begin(), v.end());
         if (not std::is_sorted(v.begin(), v.end()))
         {
             std::clog << "incorrect sorting on size " << i << '\n';
