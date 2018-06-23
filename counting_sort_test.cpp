@@ -1,31 +1,4 @@
-#include <utility>
-#include <type_traits>
-#include <iterator>
-#include <vector>
-
-namespace shino
-{
-    template <typename Iterator,
-              typename ValueType = typename std::iterator_traits<Iterator>::value_type,
-              typename = std::enable_if_t<std::is_integral_v<ValueType>, void>>
-    void counting_sort(Iterator first, Iterator last,
-                       ValueType upper_bound, ValueType lower_bound = 0)
-    {
-        //double minus as lower_bound is negative
-        std::vector<std::size_t> occurence_counters(upper_bound - lower_bound + 1);
-        auto start = first;
-        while (first != last)
-            ++occurence_counters[-lower_bound + *first++]; //lower_bound is minus, thus double minus
-
-        auto current = start;
-        for (ValueType i = 0; i <= upper_bound - lower_bound; ++i)
-        {
-            auto next = std::next(current, occurence_counters[i]);
-            std::fill(current, next, i + lower_bound);
-            current = next;
-        }
-    }
-}
+#include "counting_sort.hpp"
 
 #include <algorithm>
 #include <random>
@@ -63,7 +36,7 @@ std::vector<int> generate_signed_integers(std::size_t size)
 
 void test_unsigned_count_sort()
 {
-    for (std::size_t i = 0; i <= 20'000; ++i)
+    for (std::size_t i = 0; i <= 30'000; ++i)
     {
         std::cout << "count sorting unsigned integer vector of size " << i << '\n';
         auto v = generate_vector(i);
@@ -75,7 +48,7 @@ void test_unsigned_count_sort()
 
 void test_signed_count_sort()
 {
-    for (std::size_t i = 0; i <= 20'000; ++i)
+    for (std::size_t i = 0; i <= 30'000; ++i)
     {
         std::cout << "count sorting signed integer vector of size " << i << '\n';
         auto v = generate_signed_integers(i);
