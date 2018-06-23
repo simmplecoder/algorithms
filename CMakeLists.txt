@@ -28,4 +28,4 @@ add_test(NAME counting_sort_test COMMAND counting_sort)
 
 add_executable(benchmarkv2 benchmark/benchmarkv2.cpp)
 
-add_executable(radix_sort radix_sort_test.cpp)
+add_executable(radix_sort radix_sort_test.cpp radix_sort.hpp)
