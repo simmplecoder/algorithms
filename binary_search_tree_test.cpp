@@ -46,9 +46,6 @@ void run_randomized_insert_tests()
 
 void remove_value(std::vector<int>& vec, int x)
 {
-//    for (auto iter = v.begin(); iter != v.end(); ++iter)
-//        if (*iter == x)
-//            v.erase(iter);
     vec.erase(std::remove(vec.begin(), vec.end(), x), vec.end());
 }
 
