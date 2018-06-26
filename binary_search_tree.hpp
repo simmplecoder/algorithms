@@ -17,22 +17,6 @@ namespace shino
             node* right;
         };
 
-        enum class direction
-        {
-            is_root,
-            left,
-            right
-        };
-
-        struct search_result
-        {
-            //actually used in structured binding,
-            // but clion doesn't recognize that
-            node* parent;
-            node* target_child;
-            direction parent_to_child;
-        };
-
         node* root;
         std::size_t element_count;
     public:
@@ -61,14 +45,17 @@ namespace shino
 
         bool try_insert(const ValueType& value)
         {
-            bool is_inserted = try_insert_helper(value, root);
-            element_count += is_inserted;
-            return is_inserted;
+            auto insertion_point = find_node(value);
+            if (*insertion_point)
+                return false;
+            *insertion_point = new node{value};
+            ++element_count;
+            return true;
         }
 
         bool exists(const ValueType& value)
         {
-            return find_node(value, nullptr, root, direction::is_root).target_child != nullptr;
+            return *find_node(value) != nullptr;
         }
 
         bool delete_if_exists(const ValueType& value)
@@ -76,13 +63,17 @@ namespace shino
             if (element_count == 0)
                 return false;
 
-            auto child_ptr = find_extraction_location(value);
-            if (*child_ptr == nullptr)
+            auto child_ptr = find_node(value);
+            if (!*child_ptr)
                 return false;
 
             *child_ptr = find_replacement(*child_ptr);
             --element_count;
             return true;
+        }
+
+        std::size_t size() {
+            return element_count;
         }
 
         void clear()
@@ -108,7 +99,7 @@ namespace shino
     private:
         node* find_replacement(node* start_pos)
         {
-            if (start_pos->left == nullptr)
+            if (!start_pos->left)
             {
                 auto replacement = start_pos->right;
                 delete start_pos;
@@ -116,7 +107,7 @@ namespace shino
             }
 
             auto descendant = start_pos->left;
-            while (descendant->right != nullptr)
+            while (descendant->right)
                 descendant = descendant->right;
 
             descendant->right = start_pos->right;
@@ -124,21 +115,9 @@ namespace shino
             return start_pos->left;
         }
 
-        node** find_extraction_location(const ValueType& value)
-        {
-            auto* current = &root;
-            while (*current != nullptr and (*current)->value != value)
-                if (value < (*current)->value)
-                    current = &(*current)->left;
-                else
-                    current = &(*current)->right;
-
-            return {current};
-        }
-
         void clear_helper(node* start_position)
         {
-            if (start_position == nullptr)
+            if (!start_position)
                 return;
             clear_helper(start_position->left);
             clear_helper(start_position->right);
@@ -146,53 +125,16 @@ namespace shino
             delete start_position;
         }
 
-        search_result find_node(const ValueType& value,
-                                node* parent,
-                                node* current_node,
-                                direction parent_to_child)
+        node** find_node(const ValueType& value)
         {
-            if (current_node == nullptr)
-                return {nullptr, nullptr, direction::is_root};
+            auto* current = &root;
+            while (*current and (*current)->value != value)
+                if (value < (*current)->value)
+                    current = &(*current)->left;
+                else
+                    current = &(*current)->right;
 
-            if (current_node->value == value)
-                return {parent, current_node, parent_to_child};
-
-            if (value < current_node->value)
-                return find_node(value, current_node, current_node->left, direction::left);
-            else
-                return find_node(value, current_node, current_node->right, direction::right);
-        }
-
-        bool exists_helper(const ValueType& value,
-                           node* current_node)
-        {
-            if (current_node == nullptr)
-                return false;
-            if (current_node->value == value)
-                return true;
-
-            if (value < current_node->value)
-                return exists_helper(value, current_node->left);
-            else
-                return exists_helper(value, current_node->right);
-        }
-
-        bool try_insert_helper(const ValueType& value,
-                               node*& current_node)
-        {
-            if (current_node == nullptr)
-            {
-                current_node = new node{value};
-                return true;
-            }
-
-            if (current_node->value == value)
-                return false;
-
-            if (current_node->value > value)
-                return try_insert_helper(value, current_node->left);
-            else
-                return try_insert_helper(value, current_node->right);
+            return current;
         }
     };
 }

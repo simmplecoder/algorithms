@@ -92,14 +92,4 @@ int main(){
     std::cout << "running randomized remove tests...\n";
     run_randomized_remove_tests();
     std::cout << "randomized remove tests passed successfully\n";
-//    shino::binary_search_tree<int> tree;
-//    std::vector<int> numbers{5, 4, 9, 8, 7, 0, 2, 1, 6, 3, 10};
-//    for (auto x: numbers)
-//        tree.try_insert(x);
-//
-//    remove_value(numbers, 3);
-//    tree.delete_if_exists(3);
-//
-//    remove_value(numbers, 4);
-//    tree.delete_if_exists(4);
 }
