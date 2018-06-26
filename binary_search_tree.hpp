@@ -34,11 +34,13 @@ namespace shino
         };
 
         node* root;
+        std::size_t element_count;
     public:
         using iterator = binary_tree_iterator<node>;
 
         binary_search_tree() :
-                root(nullptr)
+                root(nullptr),
+                element_count(0)
         {}
 
         binary_search_tree(const binary_search_tree& other) = delete;
@@ -46,18 +48,22 @@ namespace shino
         binary_search_tree& operator=(const binary_search_tree& other) = delete;
 
         binary_search_tree(binary_search_tree&& other) noexcept:
-                root(std::exchange(other.root, nullptr))
+                root(std::exchange(other.root, nullptr)),
+                element_count(std::exchange(other.element_count, 0))
         {}
 
         binary_search_tree& operator=(binary_search_tree&& other) noexcept
         {
             std::swap(root, other.root);
+            std::swap(element_count, other.element_count);
             return *this;
         }
 
         bool try_insert(const ValueType& value)
         {
-            return try_insert_helper(value, root);
+            bool is_inserted = try_insert_helper(value, root);
+            element_count += is_inserted;
+            return is_inserted;
         }
 
         bool exists(const ValueType& value)
@@ -67,73 +73,15 @@ namespace shino
 
         bool delete_if_exists(const ValueType& value)
         {
-            auto[parent_node, node_with_value, parent_to_child] =
-            find_node(value, nullptr, root, direction::is_root);
-
-            if (node_with_value == nullptr)
+            if (element_count == 0)
                 return false;
 
-            if (node_with_value->left == nullptr)
-            {
-                auto old = node_with_value;
-                switch (parent_to_child)
-                {
-                    case direction::left:
-                        parent_node->left = node_with_value->left;
-                        break;
-                    case direction::right:
-                        parent_node->right = node_with_value->right;
-                        break;
-                    case direction::is_root:
-                        root = root->right;
-                }
-                delete old;
-                return true;
-            }
+            auto child_ptr = find_extraction_location(value);
+            if (*child_ptr == nullptr)
+                return false;
 
-            if (node_with_value->left->right == nullptr)
-            {
-                switch (parent_to_child)
-                {
-                    case direction::left:
-                        parent_node->left = node_with_value->right;
-                        node_with_value->right->left = node_with_value->left;
-                        break;
-                    case direction::right:
-                        parent_node->right = node_with_value->right;
-                        node_with_value->right->left = node_with_value->left;
-                        break;
-                    case direction::is_root:
-                        root->left->right = root->right;
-                        root = root->left;
-                }
-                delete node_with_value;
-                return true;
-            }
-
-            auto[suitable_parent, suitable_node] =
-            find_suitable_node(node_with_value->left->right, node_with_value->left);
-            switch (parent_to_child)
-            {
-                case direction::left:
-                    parent_node->left = suitable_node;
-                    suitable_node->right = node_with_value->right;
-                    suitable_node->left = node_with_value->left;
-                    break;
-                case direction::right:
-                    parent_node->right = suitable_node;
-                    suitable_node->right = node_with_value->right;
-                    suitable_node->left = node_with_value->left;
-
-                    break;
-                case direction::is_root:
-                    suitable_node->right = root->right;
-                    suitable_node->left = root->left;
-                    root = suitable_node;
-            }
-            suitable_parent->right = nullptr;
-            delete node_with_value;
-
+            *child_ptr = find_replacement(*child_ptr);
+            --element_count;
             return true;
         }
 
@@ -158,11 +106,34 @@ namespace shino
         }
 
     private:
-        std::pair<node*, node*> find_suitable_node(node* start_position, node* parent)
+        node* find_replacement(node* start_pos)
         {
-            if (start_position->right == nullptr)
-                return {parent, start_position};
-            return find_suitable_node(start_position->right, start_position);
+            if (start_pos->left == nullptr)
+            {
+                auto replacement = start_pos->right;
+                delete start_pos;
+                return replacement;
+            }
+
+            auto descendant = start_pos->left;
+            while (descendant->right != nullptr)
+                descendant = descendant->right;
+
+            descendant->right = start_pos->right;
+            delete start_pos;
+            return start_pos->left;
+        }
+
+        node** find_extraction_location(const ValueType& value)
+        {
+            auto* current = &root;
+            while (*current != nullptr and (*current)->value != value)
+                if (value < (*current)->value)
+                    current = &(*current)->left;
+                else
+                    current = &(*current)->right;
+
+            return {current};
         }
 
         void clear_helper(node* start_position)
