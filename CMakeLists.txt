@@ -36,3 +36,5 @@ add_test(NAME radix_sort_test COMMAND radix_sort)
 
 add_executable(comb_sort comb_sort_test.cpp quadratic_sorts.hpp)
 add_test(NAME comb_sort_test COMMAND comb_sort)
+
+add_executable(mixed_sort mixed_sort.cpp)

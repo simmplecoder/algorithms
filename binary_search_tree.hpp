@@ -26,6 +26,8 @@ namespace shino
     public:
         using iterator = binary_tree_iterator<node>;
 
+        binary_search_tree() = default;
+
         binary_search_tree(binary_search_tree&& other) noexcept:
                 root(std::exchange(other.root, nullptr)),
                 element_count(std::exchange(other.element_count, 0))
@@ -174,7 +176,7 @@ namespace shino
             delete start_position;
         }
 
-        node** find_node(const ValueType& value)
+        node* const* find_node(const ValueType& value) const
         {
             auto* current = &root;
             while (*current and (*current)->value != value)
@@ -184,6 +186,11 @@ namespace shino
                     current = &(*current)->right;
 
             return current;
+        }
+
+        node** find_node(const ValueType& value)
+        {
+            return const_cast<node**>(std::as_const(*this).find_node(value));
         }
     };
 }
