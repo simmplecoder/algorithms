@@ -23,7 +23,7 @@ add_test(NAME heap_sort_test COMMAND heap_sort)
 add_executable(binary_search_tree binary_search_tree_test.cpp binary_tree_iterator.hpp binary_search_tree.hpp)
 add_test(NAME binary_search_tree_test COMMAND binary_search_tree)
 
-add_executable(merge_sort merge_sort.hpp merge_sort_test.cpp)
+add_executable(merge_sort merge_sort.hpp merge_sort_test.cpp utility.hpp)
 add_test(NAME merge_sort_test COMMAND merge_sort)
 
 add_executable(counting_sort counting_sort_test.cpp counting_sort.hpp)

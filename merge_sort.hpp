@@ -4,22 +4,10 @@
 #include <iterator>
 #include <algorithm>
 #include <vector>
+#include "utility.hpp"
 
 namespace shino
 {
-    template <typename Iterator>
-    constexpr Iterator middle(Iterator first, Iterator last)
-    {
-        auto distance = std::distance(first, last);
-        return first + distance / 2;
-    }
-
-    template <typename Container>
-    constexpr typename Container::iterator middle(Container& container)
-    {
-        return middle(container.begin(), container.end());
-    }
-
     template <typename Iterator, typename OutputIterator, typename Compare = std::less<>>
     void merge(Iterator first, Iterator middle, Iterator last, OutputIterator d_first, Compare cmp = {})
     {
