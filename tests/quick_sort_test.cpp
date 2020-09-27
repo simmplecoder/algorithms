@@ -1,9 +1,9 @@
-#include "quick_sort.hpp"
+#include <sorting/quick_sort.hpp>
 
 #include <iostream>
-#include <vector>
 #include <random>
 #include <unordered_set>
+#include <vector>
 
 std::vector<int> generate_vector(std::size_t size)
 {
@@ -19,8 +19,8 @@ std::vector<int> generate_vector(std::size_t size)
 
 std::vector<int> v{generate_vector(6)};
 
-#include <iterator>
 #include <algorithm>
+#include <iterator>
 
 int main()
 {
@@ -29,7 +29,11 @@ int main()
     for (std::size_t i = 0; i <= 30'000; ++i)
     {
         std::vector<int> v(i);
-        std::generate(v.begin(), v.end(), [&dist, &twister]{return dist(twister);});
+        std::generate(v.begin(), v.end(),
+                      [&dist, &twister]
+                      {
+                          return dist(twister);
+                      });
 
         std::cout << "sorting vector of size " << i << '\n';
         shino::quick_sort(v.begin(), v.end());

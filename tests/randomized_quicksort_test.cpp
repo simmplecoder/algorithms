@@ -1,7 +1,7 @@
-#include "quick_sort.hpp"
+#include <sorting/quick_sort.hpp>
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 #include <stdexcept>
 
 int main()
@@ -11,7 +11,11 @@ int main()
     for (std::size_t i = 0; i <= 30'000; ++i)
     {
         std::vector<int> v(i);
-        std::generate(v.begin(), v.end(), [&dist, &twister]{return dist(twister);});
+        std::generate(v.begin(), v.end(),
+                      [&dist, &twister]
+                      {
+                          return dist(twister);
+                      });
 
         std::cout << "sorting vector of size " << i << '\n';
         shino::randomized_quicksort(v.begin(), v.end());

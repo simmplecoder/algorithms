@@ -1,9 +1,9 @@
-#include "merge_sort.hpp"
+#include <sorting/merge_sort.hpp>
 
-#include <iostream>
-#include <vector>
-#include <random>
 #include <algorithm>
+#include <iostream>
+#include <random>
+#include <vector>
 
 std::vector<int> generate_vector(std::size_t size)
 {

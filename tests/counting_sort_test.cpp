@@ -1,8 +1,8 @@
-#include "counting_sort.hpp"
+#include <sorting/counting_sort.hpp>
 
 #include <algorithm>
-#include <random>
 #include <iostream>
+#include <random>
 
 std::vector<int> generate_vector(std::size_t size)
 {

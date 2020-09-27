@@ -1,9 +1,10 @@
-#include "heap_sort.hpp"
-#include <vector>
-#include <iostream>
-#include <random>
-#include <numeric>
+#include <sorting/heap_sort.hpp>
+
 #include <algorithm>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <vector>
 
 std::vector<int> generate_vector(std::size_t size)
 {
@@ -38,4 +39,3 @@ int main()
             std::cerr << "incorrect heap sorting on size " << i << '\n';
     }
 }
-

@@ -1,10 +1,10 @@
-#include "quadratic_sorts.hpp"
-#include <vector>
-#include <iostream>
-#include <algorithm>
-#include <stdexcept>
-#include <random>
+#include <sorting/quadratic_sorts.hpp>
 
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <stdexcept>
+#include <vector>
 
 std::vector<int> generate_vector(std::size_t size)
 {
