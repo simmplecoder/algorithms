@@ -22,11 +22,13 @@ std::vector<int> v{generate_vector(6)};
 #include <algorithm>
 #include <iterator>
 
+#include "testing_config.hpp"
+
 int main()
 {
     std::mt19937 twister{};
     std::uniform_int_distribution<int> dist{};
-    for (std::size_t i = 0; i <= 30'000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         std::vector<int> v(i);
         std::generate(v.begin(), v.end(),

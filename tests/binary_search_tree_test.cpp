@@ -5,6 +5,8 @@
 #include <random>
 #include <unordered_set>
 
+#include "testing_config.hpp"
+
 std::vector<int> generate_unique_numbers(std::size_t size)
 {
     std::vector<int> result;
@@ -25,7 +27,7 @@ std::vector<int> generate_unique_numbers(std::size_t size)
 
 void run_randomized_insert_tests()
 {
-    for (std::size_t i = 0; i <= 5'000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         std::cout << "running binary_search_tree insert test on size " << i << '\n';
         auto numbers = generate_unique_numbers(i);
@@ -53,7 +55,7 @@ void run_randomized_remove_tests()
 {
     static std::mt19937_64 twister;
 
-    for (std::size_t i = 0; i <= 1'000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         shino::binary_search_tree<int> tree;
         auto numbers = generate_unique_numbers(i);

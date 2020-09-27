@@ -6,6 +6,8 @@
 #include <random>
 #include <vector>
 
+#include "testing_config.hpp"
+
 std::vector<int> generate_vector(std::size_t size)
 {
     if (size == 0)
@@ -25,7 +27,7 @@ std::vector<int> generate_vector(std::size_t size)
 
 int main()
 {
-    for (std::size_t i = 0; i <= 30'000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         std::vector<int> v(generate_vector(i));
 

@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include "testing_config.hpp"
+
 std::vector<int> generate_vector(std::size_t size)
 {
     auto generator = []
@@ -23,7 +25,7 @@ std::vector<int> generate_vector(std::size_t size)
 
 int main()
 {
-    for (std::size_t i = 0; i <= 4000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         auto v = generate_vector(i);
         std::cout << "Sorting vector with size " << i << '\n';

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <random>
 
+#include "testing_config.hpp"
+
 std::vector<int> generate_vector(std::size_t size)
 {
     auto generator = []
@@ -36,7 +38,7 @@ std::vector<int> generate_signed_integers(std::size_t size)
 
 void test_unsigned_count_sort()
 {
-    for (std::size_t i = 0; i <= 30'000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         std::cout << "count sorting unsigned integer vector of size " << i << '\n';
         auto v = generate_vector(i);
@@ -48,7 +50,7 @@ void test_unsigned_count_sort()
 
 void test_signed_count_sort()
 {
-    for (std::size_t i = 0; i <= 30'000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         std::cout << "count sorting signed integer vector of size " << i << '\n';
         auto v = generate_signed_integers(i);

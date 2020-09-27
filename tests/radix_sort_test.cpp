@@ -5,6 +5,8 @@
 #include <random>
 #include <vector>
 
+#include "testing_config.hpp"
+
 std::vector<unsigned> generate_vector(std::size_t size, unsigned power_limit)
 {
     auto generator = [power_limit]
@@ -62,7 +64,7 @@ int main()
     constexpr auto power = 16u;
     //    for (unsigned power = 4; power <= 16; ++power)
     //    {
-    for (auto size = 0ull; size <= 30'000; ++size)
+    for (auto size = 0ull; size <= test_size_max; ++size)
     {
         std::cout << "radix sorting vector of size " << size << '\n';
         auto input = generate_vector(size, power);

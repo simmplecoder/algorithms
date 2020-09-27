@@ -1,0 +1,13 @@
+#ifndef SORTING_TESTS_TESTING_CONFIG_HPP
+#define SORTING_TESTS_TESTING_CONFIG_HPP
+
+#cmakedefine01 SORTING_IS_THOROUGH_TESTING
+
+#include <cstddef>
+#if SORTING_IS_THOROUGH_TESTING
+inline std::size_t test_size_max = 30'000;
+#else
+inline std::size_t test_size_max = 1'000;
+#endif
+
+#endif

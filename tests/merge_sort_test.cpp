@@ -5,6 +5,8 @@
 #include <random>
 #include <vector>
 
+#include "testing_config.hpp"
+
 std::vector<int> generate_vector(std::size_t size)
 {
     auto generator = []
@@ -38,7 +40,7 @@ std::vector<int> vector_for_merge(std::size_t size)
 
 void merge_test()
 {
-    for (std::size_t i = 0; i <= 20'000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         auto v = vector_for_merge(i);
         decltype(v) v3(v.size());
@@ -51,7 +53,7 @@ void merge_test()
 
 void merge_sort_test()
 {
-    for (std::size_t i = 0; i <= 20'000; ++i)
+    for (std::size_t i = 0; i <= test_size_max; ++i)
     {
         auto v = generate_vector(i);
         std::cout << "running merge sort test on size " << i << '\n';
