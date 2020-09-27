@@ -1,6 +1,7 @@
 configure_file(testing_config.hpp.in testing_config.hpp)
+enable_testing()
 
-foreach(file_name 
+foreach(FILE_NAME 
     quick_sort_test
     randomized_quicksort_test
     heap_sort_test
@@ -11,15 +12,15 @@ foreach(file_name
     comb_sort_test
     selection_strats
 )
-    set(sorting_executable_name ${file_name}_executable)
-    add_executable(${sorting_executable_name} ${file_name}.cpp)
+    set(SORTING_EXECUTABLE_NAME ${FILE_NAME}_executable)
+    add_executable(${SORTING_EXECUTABLE_NAME} ${FILE_NAME}.cpp)
     if (NOT MSVC)
-        target_compile_options(${sorting_executable_name} PRIVATE -Wall)
+        target_compile_options(${SORTING_EXECUTABLE_NAME} PRIVATE -Wall)
     else()
-        target_compile_options(${sorting_executable_name} PRIVATE /W4)
+        target_compile_options(${SORTING_EXECUTABLE_NAME} PRIVATE /W4)
     endif()
-    target_link_libraries(${sorting_executable_name} PRIVATE sorting)
+    target_link_libraries(${SORTING_EXECUTABLE_NAME} PRIVATE sorting)
     # make sure compiler as well as intellisense can see produced testing_config.hpp
-    target_include_directories(${sorting_executable_name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-    add_test(NAME ${file_name} COMMAND ${sorting_executable_name})
+    target_include_directories(${SORTING_EXECUTABLE_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+    add_test(NAME ${FILE_NAME} COMMAND ${SORTING_EXECUTABLE_NAME})
 endforeach()
