@@ -4,9 +4,17 @@ This library provides a variety of sorting algorithms. It has no dependencies ot
 
 # Theory
 
+## Equivalence
+
+The relation for two values `a` and `b` is defined as `!(a < b) && !(b < a)`. 
+
 ## Ordering
 
-Sorting is about transforming input arrays (further will be named ranges) to follow some order. In standard library, sorting requires strict partial order. 
+Sorting is about transforming input arrays (further will be named ranges) to follow some order. In standard library, sorting requires strict partial order. Strong ordering is easier to explain in terms of natural numbers, which have strong ordering. It is an ordering where you can give unique index to unique values and each value of type that supports strong order must compare equivalent to itself. Strict weak ordering is when you can give an index, not necessarily unique, to every unique value and equivalence relation must hold. One might wonder what the last definition doesn't cover. The answer is the bane of every programmer who works with floating point values - Not a Numbers (`NaN`). Each `NaN` value doesn't compare equivalent (`!(a < b) && !(b < a)`) even to itself and there many of them. There are also other user-defined types one can create that don't support strict weak order.
+
+## Allowed operations
+
+In order to allow operations to be robust, the algorithms need to make use of as few different operations as possible while still keeping great performance. Not all types are copiable, default constructible and so on. In general, comparison is required to be possible on objects of used type.
 
 ## Problem of rabbits and turtles
 
@@ -65,3 +73,7 @@ Russian roulette. On each partition depth.
 ## Heap sort:
 
 For this algorithm, a max-heap is built. Max heaps are complete binary trees where each child is lower or equal to parent. Note that instead of using separate data structure/storage, the tree is built inside range. The traversing goes like this: for each element under index i, elements under indices 2 * (i + 1) - 1 and 2 * (i + 1) will be its left and right children respectively. The sequence of plus/minus ones are that way to fix off-by-one errors. To build the heap, instead of going top-down, e.g. building the root first and then leaves at the end, bottom-up construction treats indices `n / 2 + 1` to `n` as leaf positions, and builds up from there by doing sift down on each index from `n / 2` to `0`. Sift down checks if property of heap at current node is maintained, and if not swaps the current element with greatest of its children. To finally sort the range, one has to continuously pop the heap, which is done by swapping the root with last element, and moving last element to its correct position in a now contracted heap (size decreases by one). This way, max elements are continously filled from right to left, thus establishing sorted range. For a better explanation, please watch this [MIT lecture](https://youtu.be/B7hVxCmfPtM?list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb).
+
+## Merge sort:
+
+Merge sort is a divide and conquer algorithm. First it divides range into two equally long parts, first subrange and second subrange. Until subrange length becomes one, it keeps dividing the range recursively. Afterwards, it starts *merging* subranges, which means that for subranges of length 1, it will be about deciding which one goes first and which one goes last. After merging two of those, it will merge them into one bigger subrange. Notice that since both subranges are sorted, for every index in the destination, the choice will be between either the head of the left subrange or right subrange (head is moved when element is taken from there). This means that merging takes linear time. There are versions of the algorithm that don't require linear complexity additional space, but those tend to be less efficient. As such, default constructible types are preferrable for this algorithm.
