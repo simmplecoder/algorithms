@@ -101,8 +101,6 @@ public:
     }
 };
 
-inline random_selection_strategy<> default_random_selection;
-
 struct median_of_three
 {
     template <typename RandomAccessIterator>
