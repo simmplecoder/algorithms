@@ -162,8 +162,10 @@ namespace shino
                 descendant = descendant->right;
 
             descendant->right = start_pos->right;
+
+            auto result = start_pos->left;
             delete start_pos;
-            return start_pos->left;
+            return result;
         }
 
         void clear_helper(node* start_position)
